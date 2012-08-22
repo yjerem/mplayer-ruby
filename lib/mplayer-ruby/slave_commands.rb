@@ -54,8 +54,8 @@ module MPlayer
       end
     end
 
-    # Go to the next/previous entry in the playtree. 
-    #T he sign of <value> tells the direction.  
+    # Go to the next/previous entry in the playtree.
+    #T he sign of <value> tells the direction.
     # If no entry is available in the given direction it will do
     # nothing unless :force
     def pt_step(value,force = :no_force)
@@ -67,7 +67,7 @@ module MPlayer
     def next(value,force = :no_force)
       pt_step value.abs, force
     end
-    
+
     # goes to the previous entry in the playlist denoted by value.
     # No action will occur unless :force is specified
     def back(value,force = :no_force)
@@ -129,7 +129,7 @@ module MPlayer
     def load_file(file,append = :no_append)
       raise ArgumentError,"Invalid File" unless File.exists? file
       switch = (append == :append ? 1 : 0)
-      command "loadfile #{file} #{switch}"
+      command "loadfile #{Shellwords.shellescape(file)} #{switch}"
     end
 
     # Loads the playlist into MPlayer
@@ -138,7 +138,7 @@ module MPlayer
     def load_list(file,append = :no_append)
       raise ArgumentError,"Invalid File" unless File.exists? file
       switch = (append == :append ? 1 : 0)
-      command "loadlist #{file} #{switch}"
+      command "loadlist #{Shellwords.shellescape(file)} #{switch}"
     end
 
     # When more than one source is available it selects the next/previous one.
@@ -165,7 +165,7 @@ module MPlayer
     def balance(value)
       command("balance #{value}")
     end
-    
+
     # Play one frame, then pause again.
     def frame_step; command("frame_step"); end
 
@@ -182,7 +182,7 @@ module MPlayer
     end
 
     private
-    
+
     def speed_setting(command,value)
       raise ArgumentError,"Value must be less than 6" unless value <= 5
       command("#{command} #{value}",/Speed/).gsub("Speed: x   ","")

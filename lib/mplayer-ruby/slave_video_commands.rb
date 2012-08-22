@@ -1,13 +1,13 @@
 module MPlayer
   module SlaveVideoCommands
-    
+
     # Set/adjust the audio delay.
     # If type is :relative adjust the delay by <value> seconds.
     # If type is :absolute, set the delay to <value> seconds.
     def audio_delay(value,type = :relative)
       adjust_set :audio_delay, value, type
     end
-    
+
     # Toggle OSD mode
     # or set it to <level>
     def osd(level=nil)
@@ -30,7 +30,7 @@ module MPlayer
       options.reverse_merge!({:duration => 0, :level => 0})
       command("osd_show_property_text #{string} #{options[:duration]} #{options[:level]}")
     end
-    
+
     # Set/adjust video parameters.
     # If :relative, modifies parameter by <value>.
     # If :absolute, parameter is set to <value>.
@@ -70,7 +70,7 @@ module MPlayer
     def saturation(value, type = :relative)
       setting :saturation, value, type
     end
-    
+
     # Toggle/set frame dropping mode
     # if :on, turns on dropping mode
     # if :off, turns off dropping mode
@@ -112,7 +112,7 @@ module MPlayer
     def switch_vsync(value = nil)
       toggle :switch_vsync, value
     end
-     
+
     # Toggle/set borderless display
     # :on Toggle on
     # :off Toggle off
@@ -120,7 +120,7 @@ module MPlayer
     def vo_border(value = nil)
       toggle :vo_border, value
     end
-    
+
     # Toggle/set borderless display
     # :on Toggle on
     # :off Toggle off
@@ -128,7 +128,7 @@ module MPlayer
     def vo_border(value = nil)
       toggle :vo_border, value
     end
-    
+
     # Toggle/set fullscreen mode
     # :on Toggle on
     # :off Toggle off
@@ -136,7 +136,7 @@ module MPlayer
     def vo_fullscreen(value = nil)
       toggle :vo_fullscreen, value
     end
-    
+
     # Toggle/set stay-on-top
     # :on Toggle on
     # :off Toggle off
@@ -144,7 +144,7 @@ module MPlayer
     def vo_ontop(value = nil)
       toggle :vo_ontop, value
     end
-    
+
     # Toggle/set playback on root window
     # :on Toggle on
     # :off Toggle off
@@ -152,7 +152,7 @@ module MPlayer
     def vo_rootwin(value = nil)
       toggle :vo_rootwin, value
     end
-    
+
     # Take a screenshot. Requires the screenshot filter to be loaded.
     # nil Take a single screenshot.
     # :toggle Start/stop taking screenshot of each frame.
@@ -164,14 +164,14 @@ module MPlayer
         [ 0, /screenshot/ ]
       end
       (command("screenshot #{switch}", pattern)) =~ /(shot\d*\.png)/ ? $~[1] : ""
-    end    
-    
+    end
+
     # Increases or descreases the panscan range by <value>. maximum is 1.0.
     def panscan(value)
       raise ArgumentError, "Value out of Range -1.0 .. 1.0" unless value.abs <= 1
       command "panscan #{value} 0"
     end
-    
+
     # presses the given dvd button
     # available buttons are:
     # :up :down :left :right :menu :select :prev :mouse
@@ -181,7 +181,7 @@ module MPlayer
       end
       command "dvdnav #{button}"
     end
-    
+
     # Print out the current value of a property.
     # raises an error if it fails to get the property
     def get_property(value)
@@ -189,12 +189,12 @@ module MPlayer
       raise StandardError,resp if resp =~ /Failed/
       resp
     end
-    
+
     #Set the value to a property
     def set_property(name,value)
       command "set_property #{name} #{value}"
     end
-    
+
     #adjust the propery by steps
     # if value is < 0, steps downards
     # else, steps upward
@@ -202,7 +202,7 @@ module MPlayer
       direction = value < 0 ? -1 : 1
       command "step_property #{name} #{value.abs} #{direction}"
     end
-    
+
     # Returns if it is in fullscreen mode.
     # true if it is fullscreen
     # false if it is windowed
@@ -212,7 +212,7 @@ module MPlayer
       false
     end
     alias :is_fullscreen? :get_vofullscreen
-    
+
     # Returns if it the sub is visibile mode.
     # true if it is fullscreen
     # false if it is windowed
@@ -222,14 +222,14 @@ module MPlayer
       false
     end
     alias :is_sub_visible? :get_sub_visibility
-    
+
     # Seek to the start of a chapter
     # :relative does a relative seek (+/-)
     # :absolute goes to the exact value of chapter
     def seek_chapter(value, type = :relative)
       adjust_set :seek_chapter, value, type
     end
-    
+
     def change_rectangle(coord,value,type = :relative)
       switch = case coord
       when :x then (0 + (type == :relative ? 2 : 0))
@@ -237,6 +237,6 @@ module MPlayer
       end
       command("change_rectangle #{switch} #{value}")
     end
-    
+
   end
 end

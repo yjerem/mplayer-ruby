@@ -1,6 +1,6 @@
 module MPlayer
   module SlaveSubCommands
-    
+
     # Adjust the subtitle delay
     # :relative is adjust by +/- <value> seconds.
     # :absolute is set it to <value>. (default)
@@ -48,7 +48,7 @@ module MPlayer
     # Loads subtitles from <file>.
     def sub_load(file)
       raise ArgumentError, "Invalid File" unless File.exists? file
-      command("sub_load #{file}")
+      command("sub_load #{Shellwords.shellescape(file)}")
     end
 
     # Removes the selected sub file
@@ -116,6 +116,6 @@ module MPlayer
     def forced_subs_only(value = nil)
       toggle :forced_subs_only, value
     end
-    
+
   end
 end

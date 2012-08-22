@@ -19,7 +19,7 @@ module MPlayer
       mplayer_options = "-slave -quiet"
       mplayer_options += " -vf screenshot" if options[:screenshot]
 
-      mplayer = "#{options[:path]} #{mplayer_options} #{@file}"
+      mplayer = "#{options[:path]} #{mplayer_options} #{Shellwords.shellescape(@file)}"
       @pid,@stdin,@stdout,@stderr = Open4.popen4(mplayer)
       until @stdout.gets.inspect =~ /playback/ do
       end #fast forward past mplayer's initial output
